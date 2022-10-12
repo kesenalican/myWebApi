@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FYA97RXUVL+yIWTQpu0ncqUhS5vloBUYzFWj9aCOdJy1R0h0XC/W6He79Ur3txujV5qtJsCx3q/mvOGXrlu3Jg==",
+  "dgSpecHash": "FrTdG+Wqs6hRUhsga4J8aG8jk786lTTV0a9YWUmTOhy/WWJ7amp7k+yL09NYP4b3E1quz8iB92gpeU7aMEl0eA==",
   "success": true,
-  "projectFilePath": "C:\\Web API's\\WebAPI1\\WebAPI1\\WebAPI1.csproj",
+  "projectFilePath": "C:\\MobilProjeler\\myWebApi\\myWebApi\\WebAPI1\\WebAPI1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Alican\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.9\\microsoft.aspnetcore.jsonpatch.6.0.9.nupkg.sha512",
     "C:\\Users\\Alican\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.9\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.9.nupkg.sha512",
