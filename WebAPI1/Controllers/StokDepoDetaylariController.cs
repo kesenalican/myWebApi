@@ -20,7 +20,7 @@ namespace WebAPI1.Controllers
         {
             string query = @"SELECT sdp_depo_kod, sdp_depo_no FROM STOK_DEPO_DETAYLARI";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+            string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

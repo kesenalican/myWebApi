@@ -25,7 +25,7 @@ namespace WebAPI1.Controllers
 		{
 			string query = @"select ban_kod, ban_ismi from dbo.BANKALAR";
 			DataTable table = new DataTable();
-			string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+			string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
 			SqlDataReader myReader;
 			using (SqlConnection myCon = new SqlConnection(sqlDataSource))
 			{
@@ -49,7 +49,7 @@ namespace WebAPI1.Controllers
 							values(@bankName)
 ";
 			DataTable table = new DataTable();
-			string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+			string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
 			SqlDataReader myReader;
 			using (SqlConnection myCon = new SqlConnection(sqlDataSource))
 			{
@@ -76,7 +76,7 @@ namespace WebAPI1.Controllers
 							where departmentId = @departmentId
 ";
 			DataTable table = new DataTable();
-			string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+			string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
 			SqlDataReader myReader;
 			using (SqlConnection myCon = new SqlConnection(sqlDataSource))
 			{
@@ -103,7 +103,7 @@ namespace WebAPI1.Controllers
 							where departmentId = @departmentId
 ";
 			DataTable table = new DataTable();
-			string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+			string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
 			SqlDataReader myReader;
 			using (SqlConnection myCon = new SqlConnection(sqlDataSource))
 			{

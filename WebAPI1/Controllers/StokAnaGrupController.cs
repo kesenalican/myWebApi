@@ -20,7 +20,7 @@ namespace WebAPI1.Controllers
         {
             string query = @"SELECT san_isim FROM dbo.STOK_ANA_GRUPLARI";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+            string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
