@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using System.Data;
 
-namespace WebAPI1.Controllers
+namespace WebAPI1.Controllers.StokController
 {
     [Route("api/[controller]")]
     [ApiController]
