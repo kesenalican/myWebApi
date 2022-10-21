@@ -17,7 +17,7 @@ namespace WebAPI1.Controllers.StokController
         [HttpGet]
         public JsonResult GetWithCode()
         {
-            string query = @"SELECT TOP 100 PERCENT 
+            string query = @"SELECT TOP 20  
                             sto_kod AS StokKodu /* KODU */,
                             sto_isim AS StokIsim /* ADI */,
                             ISNULL(sfiyat_fiyati,0) AS StokFiyat /* FİYAT */,
@@ -25,6 +25,7 @@ namespace WebAPI1.Controllers.StokController
                             sto_anagrup_kod AS StokAnaGrup,
                             sto_sektor_kodu AS StokSektor,
                             sto_birim1_ad AS StokBirim1, 
+							sto_birim2_ad AS StokBirim2, 
                             sto_birim3_ad AS StokBirim3,
                             sto_birim3_katsayi AS StokBirim3_katsayi,
                             sto_reyon_kodu AS StokReyon,

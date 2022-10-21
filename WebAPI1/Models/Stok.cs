@@ -17,6 +17,7 @@
         public string? StokReyon { get; set; }
         public string? StokMarka { get; set; }
         public string? StokModel { get; set; }
+        public int? KacVeri { get; set; }
 
     }
 }

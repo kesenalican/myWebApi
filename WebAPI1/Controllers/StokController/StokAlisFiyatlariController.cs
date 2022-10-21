@@ -16,10 +16,20 @@ namespace WebAPI1.Controllers.StokController
 
         }
         [HttpPost]
-        public JsonResult PostAlisFiyatlari(Stok stok)
+        public JsonResult AlisFiyatlari(Stok stok)
         {
             string query = @"
-                              Select * FROM fn_StokAlisFiyatlari(@stokKodu) ORDER BY Tarih DESC
+                              Select TOP 100 PERCENT
+                                [msg_S_0089] AS Tarih,
+                                [msg_S_0200] AS CariKodu,
+                                [msg_S_0201] AS CariAdi,
+                                [msg_S_0165\T] AS Miktar,
+                                [msg_S_0166] AS BirimAdi,
+                                [msg_S_0180\O] AS BrutBirimFiyati,
+                                [msg_S_0181\O] AS NetBirimFiyati,
+                                [msg_S_0182] AS BrutTutar
+                                FROM fn_StokFoy(@stokKodu,'20211231','20220101','20221231',0,N',1,')
+                                WHERE [msg_S_0094] = 'Giriş Faturası' AND [msg_S_0097] ='Normal' ORDER BY Tarih DESC
                              ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
