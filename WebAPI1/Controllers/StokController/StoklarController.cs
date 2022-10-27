@@ -16,7 +16,7 @@ namespace WebAPI1.Controllers.StokController
 
         }
         [HttpGet]
-        public JsonResult GetWithCode(int offset,int count)
+        public JsonResult GetWithCode(int offset)
         {
             string query = @"SELECT  
                             sto_kod AS StokKodu /* KODU */,
@@ -36,7 +36,7 @@ namespace WebAPI1.Controllers.StokController
                             LEFT OUTER JOIN dbo.STOK_SATIS_FIYATLARI_F1_D0_VIEW on sfiyat_stokkod = sto_kod AND sfiyat_satirno = 1
                             LEFT OUTER JOIN MikroDB_V16.dbo.KUR_ISIMLERI on Kur_No =  ISNULL(sfiyat_doviz,0)
                             ORDER BY sto_kod
-                            OFFSET @offset ROWS FETCH NEXT @count ROWS ONLY
+                            OFFSET @offset ROWS FETCH NEXT 20 ROWS ONLY
                              ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
@@ -48,8 +48,6 @@ namespace WebAPI1.Controllers.StokController
                 {
                     //myCommand.Parameters.AddWithValue("@pageCount", page.Page);
                     myCommand.Parameters.AddWithValue("@offset", offset);
-                    myCommand.Parameters.AddWithValue("@count", count);
-
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -59,8 +57,8 @@ namespace WebAPI1.Controllers.StokController
 
             return new JsonResult(table);
         }
-        [HttpGet("orderbyName")]
-        public JsonResult GetWithName()
+        [HttpGet("search")]
+        public JsonResult SearchStok()
         {
             string query = @"SELECT TOP 100 PERCENT 
                             sto_kod AS StokKodu /* KODU */,

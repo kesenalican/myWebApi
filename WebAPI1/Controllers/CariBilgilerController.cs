@@ -15,10 +15,9 @@ namespace WebAPI1.Controllers
 
         }
         [HttpGet]
-        public JsonResult Get()
+        public JsonResult Get(int offset)
         {
-            string query = @"SELECT TOP 100 PERCENT
-
+            string query = @"SELECT
                 cari_kod AS CariKodu /* CARI KODU */ ,
                 cari_unvan1 AS CariUnvani1 ,
                 cari_unvan2 AS CariUnvani2,
@@ -26,7 +25,6 @@ namespace WebAPI1.Controllers
                 cari_vdaire_no AS CariVDaireNo,
                 cari_EMail AS CariEmail,
                 cari_CepTel AS CariCepTel,
-
                 CASE
                 WHEN Cari_F10da_detay = 1 Then dbo.fn_CariHesapAnaDovizBakiye('',0,cari_kod,'','',NULL,NULL,NULL,0,MusteriTeminatMektubu_Bakiyeyi_Etkilemesin_fl,FirmaTeminatMektubu_Bakiyeyi_Etkilemesin_fl,DepozitoCeki_Bakiyeyi_Etkilemesin_fl,DepozitoSenedi_Bakiyeyi_Etkilemesin_fl)
                 WHEN Cari_F10da_detay = 2 Then dbo.fn_CariHesapAlternatifDovizBakiye('',0,cari_kod,'','',NULL,NULL,NULL,0,MusteriTeminatMektubu_Bakiyeyi_Etkilemesin_fl,FirmaTeminatMektubu_Bakiyeyi_Etkilemesin_fl,DepozitoCeki_Bakiyeyi_Etkilemesin_fl,DepozitoSenedi_Bakiyeyi_Etkilemesin_fl)
@@ -36,7 +34,7 @@ namespace WebAPI1.Controllers
                 FROM dbo.CARI_HESAPLAR
                 LEFT OUTER JOIN dbo.vw_Gendata ON 1=1
                 ORDER BY cari_kod
-
+                OFFSET @offset ROWS FETCH NEXT 20 ROWS ONLY
                     ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
@@ -46,6 +44,7 @@ namespace WebAPI1.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    myCommand.Parameters.AddWithValue("@offset", offset);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
