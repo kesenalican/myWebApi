@@ -17,10 +17,10 @@ namespace WebAPI1.Controllers.StokController
 
         }
         [HttpPost]
-        public JsonResult AlisFiyatlari(Stok stok)
+        public JsonResult SatisFiyatlari(Stok stok, int offset)
         {
             string query = @"
-                             Select TOP 100 PERCENT
+                             Select TOP 20 PERCENT
                              [msg_S_0089] AS Tarih,
                              [msg_S_0200] AS CariKodu,
                              [msg_S_0201] AS CariAdi,

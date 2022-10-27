@@ -77,7 +77,7 @@ namespace WebAPI1.Controllers.StokController
                             FROM STOKLAR WITH (NOLOCK)
                             LEFT OUTER JOIN dbo.STOK_SATIS_FIYATLARI_F1_D0_VIEW on sfiyat_stokkod = sto_kod AND sfiyat_satirno = 1
                             LEFT OUTER JOIN MikroDB_V16.dbo.KUR_ISIMLERI on Kur_No =  ISNULL(sfiyat_doviz,0)
-                            ORDER BY sto_isim
+                            ORDER BY sto_kod
                              ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
@@ -97,31 +97,6 @@ namespace WebAPI1.Controllers.StokController
             return new JsonResult(table);
         }
 
-        [HttpGet("pagianation")]
-        public JsonResult GetStokWithPagination()
-        {
-            string query = @"
-                            SELECT ROW_NUMBER() OVER (ORDER BY sto_create_date) as 'Row_Number',*  FROM STOKLAR ORDER BY sto_create_date 
-                            offset 0 rows fetch next 5 rows only
-                             ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult(table);
-        }
 
 
     }
