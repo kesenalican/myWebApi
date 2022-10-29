@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using System.Data;
 
-namespace WebAPI1.Controllers
+namespace WebAPI1.Controllers.Cariler
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -54,5 +54,28 @@ namespace WebAPI1.Controllers
 
             return new JsonResult(table);
         }
+        [HttpGet("fullCari")]
+        public JsonResult GetCari()
+        {
+            string query = @"SELECT TOP 10  * FROM CARI_HESAPLAR";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult(table);
+        }
+
+
     }
 }
