@@ -7,25 +7,25 @@ namespace WebAPI1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : Controller
+    public class VergiDaireleri : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public UserController(IConfiguration configuration)
+        public VergiDaireleri(IConfiguration configuration)
         {
             _configuration = configuration;
 
         }
         [HttpPost]
-        public JsonResult GetUsers()
+        public JsonResult GetVergiDaireleri()
         {
-                                string query = @"SELECT TOP 100 PERCENT
-                                User_no AS KULLANICI_NO,
-                                User_name COLLATE database_default AS KULLANICI_KISA_ADI,
-                                User_LongName COLLATE database_default AS KULLANICI_UZUN_ADI,
-                                CASE WHEN LTRIM(RTRIM(User_LongName))<>'' THEN User_LongName ELSE User_name END AS KULLANICI_ADI
-                                FROM MikroDB_V16.dbo.KULLANICILAR   ";
+            string query = @"SELECT 
+                            [msg_S_1364] AS VergDaireKodu,
+                            [msg_S_0870] AS VergiDaireAdi,
+                            [msg_S_1366] AS VergiDaireIl
+                            FROM [MikroDB_V16].[dbo].[VERGI_DAIRELERI_CHOOSE_2] ORDER BY VergiDaireAdi ASC
+                           ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("MikroUsers");
+            string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

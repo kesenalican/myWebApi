@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using System.Data;
+using WebAPI1.Models;
 
 namespace WebAPI1.Controllers.Cariler
 {
@@ -75,6 +76,13 @@ namespace WebAPI1.Controllers.Cariler
 
             return new JsonResult(table);
         }
+
+
+        //[HttpPost]
+        //public JsonResult SaveCari(CariModel cari)
+        //{
+        //    string query = @" "
+        //}
 
 
     }

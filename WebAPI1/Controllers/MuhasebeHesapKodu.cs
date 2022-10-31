@@ -1,31 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
-using WebAPI1.Models;
 
 namespace WebAPI1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : Controller
+    public class MuhasebeHesapKodu : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public UserController(IConfiguration configuration)
+        public MuhasebeHesapKodu(IConfiguration configuration)
         {
             _configuration = configuration;
 
         }
-        [HttpPost]
-        public JsonResult GetUsers()
+        [HttpGet]
+        public JsonResult GetMuhasebeHesapKodu()
         {
-                                string query = @"SELECT TOP 100 PERCENT
-                                User_no AS KULLANICI_NO,
-                                User_name COLLATE database_default AS KULLANICI_KISA_ADI,
-                                User_LongName COLLATE database_default AS KULLANICI_UZUN_ADI,
-                                CASE WHEN LTRIM(RTRIM(User_LongName))<>'' THEN User_LongName ELSE User_name END AS KULLANICI_ADI
-                                FROM MikroDB_V16.dbo.KULLANICILAR   ";
+            string query = @"SELECT TOP 100 PERCENT
+                            muh_hesap_kod   AS MuhHesapKodu /* HESAP KODU */ ,
+                            muh_hesap_isim1 AS MuhHesapIsim /* HESAP İSMİ */
+                            FROM dbo.MUHASEBE_HESAP_PLANI WITH (NOLOCK)
+                            ORDER BY muh_hesap_kod";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("MikroUsers");
+            string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -41,6 +39,5 @@ namespace WebAPI1.Controllers
 
             return new JsonResult(table);
         }
-
     }
 }
