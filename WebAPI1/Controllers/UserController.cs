@@ -15,7 +15,7 @@ namespace WebAPI1.Controllers
             _configuration = configuration;
 
         }
-        [HttpPost]
+        [HttpGet]
         public JsonResult GetUsers()
         {
                                 string query = @"SELECT TOP 100 PERCENT
