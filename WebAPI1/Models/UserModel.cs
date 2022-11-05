@@ -9,9 +9,11 @@
 namespace WebAPI1.Models
 {
     using Newtonsoft.Json;
+    using System.ComponentModel.DataAnnotations;
 
     public partial class UserModel
     {
+        [Required]
         [JsonProperty("KULLANICI_NO")]
         public long KullaniciNo { get; set; }
 
