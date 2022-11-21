@@ -63,10 +63,10 @@ namespace WebAPI1.Models
         public long SipSubeno { get; set; } = 0;
 
         [JsonProperty("sip_tarih")]
-        public DateTimeOffset SipTarih { get; set; } = new DateTimeOffset();
+        public DateTimeOffset SipTarih { get; set; } = DateTime.Now;
 
         [JsonProperty("sip_teslim_tarih")]
-        public DateTimeOffset SipTeslimTarih { get; set; }= new DateTimeOffset();
+        public DateTimeOffset SipTeslimTarih { get; set; } = DateTime.Now;
 
         [JsonProperty("sip_tip")]
         public long SipTip { get; set; } = 0; // 0 : Talep 1: Temin
@@ -206,6 +206,9 @@ namespace WebAPI1.Models
         [JsonProperty("sip_cagrilabilir_fl")]
         public bool SipCagrilabilirFl { get; set; } = true;
 
+        [JsonProperty("sip_prosip_uid")]
+        public Guid SipProsipUid { get; set; } = Guid.NewGuid(); //00000000 - 0000 - 0000 - 0000 - 000000000000
+
         [JsonProperty("sip_iskonto1")]
         public long SipIskonto1 { get; set; } = 0;
 
@@ -275,8 +278,14 @@ namespace WebAPI1.Models
         [JsonProperty("sip_durumu")]
         public long SipDurumu { get; set; } = 0;//0:Stoktan sevk edilecek 1:Üretilecek 2:Satın alınacak 3:Stoktan sevk edilecek
 
+        [JsonProperty("sip_stal_uid")]
+        public Guid SipStalUid { get; set; } = Guid.NewGuid();
+
         [JsonProperty("sip_planlananmiktar")]
         public long SipPlanlananmiktar { get; set; } = 0;
+
+        [JsonProperty("sip_teklif_uid")]
+        public Guid SipTeklifUid { get; set; } = Guid.NewGuid(); // FARKLI OLMASI LAZIM
 
         [JsonProperty("sip_parti_kodu")]
         public string SipPartiKodu { get; set; } = string.Empty;
@@ -305,14 +314,20 @@ namespace WebAPI1.Models
         [JsonProperty("sip_paket_kod")]
         public string SipPaketKod { get; set; } = string.Empty;
 
+        [JsonProperty("sip_Rez_uid")]
+        public Guid SipRezUid { get; set; } = Guid.NewGuid();
+
         [JsonProperty("sip_harekettipi")]
         public long SipHarekettipi { get; set; } = 0;
+
+        [JsonProperty("sip_yetkili_uid")]
+        public Guid SipYetkiliUid { get; set; } = Guid.NewGuid();
 
         [JsonProperty("sip_kapatmanedenkod")]
         public string SipKapatmanedenkod { get; set; } = string.Empty;
 
         [JsonProperty("sip_gecerlilik_tarihi")]
-        public DateTimeOffset SipGecerlilikTarihi { get; set; } = new DateTimeOffset();
+        public DateTimeOffset SipGecerlilikTarihi { get; set; } = DateTime.Now;
 
         [JsonProperty("sip_onodeme_evrak_tip")]
         public long SipOnodemeEvrakTip { get; set; } = 0;
