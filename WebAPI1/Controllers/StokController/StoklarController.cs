@@ -31,7 +31,27 @@ namespace WebAPI1.Controllers.StokController
                             sto_birim3_katsayi AS StokBirim3_katsayi,
                             sto_reyon_kodu AS StokReyon,
                             sto_marka_kodu AS StokMarka,
-                            sto_model_kodu AS StokModel
+                            sto_model_kodu AS StokModel,
+							CASE 
+							WHEN sto_perakende_vergi = 2 Then dbo.fn_VergiIsim(2)
+							WHEN sto_perakende_vergi = 3 Then dbo.fn_VergiIsim(3)
+							WHEN sto_perakende_vergi = 4 Then dbo.fn_VergiIsim(4)
+							END AS PerakendeVergiIsim,
+							CASE 
+							WHEN sto_perakende_vergi = 2 Then dbo.fn_VergiYuzde(2)
+							WHEN sto_perakende_vergi = 3 Then dbo.fn_VergiYuzde(3)
+							WHEN sto_perakende_vergi = 4 Then dbo.fn_VergiYuzde(4)
+							END AS PerakendeVergiYuzde,
+							CASE 
+							WHEN sto_toptan_vergi = 2 Then dbo.fn_VergiIsim(2)
+							WHEN sto_toptan_vergi = 3 Then dbo.fn_VergiIsim(3)
+							WHEN sto_toptan_vergi = 4 Then dbo.fn_VergiIsim(4)
+							END AS ToptanVergiIsim,
+							CASE 
+							WHEN sto_toptan_vergi = 2 Then dbo.fn_VergiYuzde(2)
+							WHEN sto_toptan_vergi = 3 Then dbo.fn_VergiYuzde(3)
+							WHEN sto_toptan_vergi = 4 Then dbo.fn_VergiYuzde(4)
+							END AS ToptanVergiYuzde
                             FROM STOKLAR WITH (NOLOCK)
                             LEFT OUTER JOIN dbo.STOK_SATIS_FIYATLARI_F1_D0_VIEW on sfiyat_stokkod = sto_kod AND sfiyat_satirno = 1
                             LEFT OUTER JOIN MikroDB_V16.dbo.KUR_ISIMLERI on Kur_No =  ISNULL(sfiyat_doviz,0)

@@ -11,6 +11,8 @@ namespace WebAPI1.Models
 
     public partial class Siparis
     {
+      
+
         [JsonProperty("sip_DBCno")]
         public long SipDbCno { get; set; } = 0;
 
