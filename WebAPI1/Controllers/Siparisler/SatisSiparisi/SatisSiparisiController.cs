@@ -214,7 +214,6 @@ namespace WebAPI1.Controllers.Siparisler.SatisSiparisi
                     myCommand.Parameters.AddWithValue("@sip_satis_fiyat_doviz_cinsi", siparisler.SipSatisFiyatDovizCinsi); 
                     myCommand.Parameters.AddWithValue("@sip_satis_fiyat_doviz_kuru", siparisler.SipSatisFiyatDovizKuru); 
                     myCommand.Parameters.AddWithValue("@sip_eticaret_kanal_kodu", siparisler.SipEticaretKanalKodu);
-
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

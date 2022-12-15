@@ -35,7 +35,7 @@ namespace WebAPI1.Controllers.StokController
 							CASE 
 							WHEN sto_perakende_vergi = 2 Then dbo.fn_VergiIsim(2)
 							WHEN sto_perakende_vergi = 3 Then dbo.fn_VergiIsim(3)
-							WHEN sto_perakende_vergi = 4 Then dbo.fn_VergiIsim(4)
+							WHEN sto_perakende_vergi = 4 Then  dbo.fn_VergiIsim(4)
 							END AS PerakendeVergiIsim,
 							CASE 
 							WHEN sto_perakende_vergi = 2 Then dbo.fn_VergiYuzde(2)

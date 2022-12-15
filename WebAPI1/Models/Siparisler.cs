@@ -41,13 +41,13 @@ namespace WebAPI1.Models
         public long SipCreateUser { get; set; } = 0;
 
         [JsonProperty("sip_create_date")]
-        public DateTimeOffset SipCreateDate { get; set; } = DateTime.Now;
+        public DateTime SipCreateDate { get; set; } = DateTime.Now;
 
         [JsonProperty("sip_lastup_user")]
         public long SipLastupUser { get; set; } = 0;
 
         [JsonProperty("sip_lastup_date")] 
-        public DateTimeOffset SipLastupDate { get; set; } = DateTime.Now;
+        public DateTime SipLastupDate { get; set; } = DateTime.Now;
 
         [JsonProperty("sip_special1")]
         public string SipSpecial1 { get; set; } = string.Empty;
@@ -65,10 +65,10 @@ namespace WebAPI1.Models
         public long SipSubeno { get; set; } = 0;
 
         [JsonProperty("sip_tarih")]
-        public DateTimeOffset SipTarih { get; set; } = DateTime.Now;
+        public DateTime SipTarih { get; set; } = DateTime.Now;
 
         [JsonProperty("sip_teslim_tarih")]
-        public DateTimeOffset SipTeslimTarih { get; set; } = DateTime.Now;
+        public DateTime SipTeslimTarih { get; set; } = DateTime.Now;
 
         [JsonProperty("sip_tip")]
         public long SipTip { get; set; } = 0; // 0 : Talep 1: Temin
@@ -89,7 +89,7 @@ namespace WebAPI1.Models
         public string SipBelgeno { get; set; } = string.Empty;
 
         [JsonProperty("sip_belge_tarih")]
-        public DateTimeOffset SipBelgeTarih { get; set; } = DateTime.Now;
+        public DateTime SipBelgeTarih { get; set; } = DateTime.Now;
 
         [JsonProperty("sip_satici_kod")]
         public string SipSaticiKod { get; set; } = string.Empty;
@@ -329,7 +329,7 @@ namespace WebAPI1.Models
         public string SipKapatmanedenkod { get; set; } = string.Empty;
 
         [JsonProperty("sip_gecerlilik_tarihi")]
-        public DateTimeOffset SipGecerlilikTarihi { get; set; } = DateTime.Now;
+        public DateTime SipGecerlilikTarihi { get; set; } = DateTime.Now;
 
         [JsonProperty("sip_onodeme_evrak_tip")]
         public long SipOnodemeEvrakTip { get; set; } = 0;
