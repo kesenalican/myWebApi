@@ -15,15 +15,17 @@ namespace WebAPI1.Controllers.CariPersoneller
         }
 
         [HttpGet]
-        public JsonResult GetMerkez()
+        public JsonResult GetMerkez(int tipi)
         {
             string query = @"SELECT TOP 100 PERCENT
-                            cari_per_kod AS cariPersonelKodu /* CARİ PERSONEL KODU */ ,
-                            cari_per_adi AS cariPersonelAdi /* CARİ PERSONEL ADI */ ,
-                            cari_per_soyadi AS cariPersonelSoyadi /* CARİ PERSONEL SOYADI */,
-                            cari_per_kasiyerkodu AS kasiyer /* KASİYER */
+                            cari_per_kod AS cari_personel_kodu /* CARİ PERSONEL KODU */ ,
+                            cari_per_adi AS cari_personel_adi /* CARİ PERSONEL ADI */ ,
+                            cari_per_soyadi AS cari_personel_soyadi /* CARİ PERSONEL SOYADI */,
+                            cari_per_kasiyerkodu AS kasiyer /* KASİYER */,
+                            cari_per_tip AS personelTipi /* Personel Tipi */
                             FROM dbo.CARI_PERSONEL_TANIMLARI WITH (NOLOCK)
-                             WHERE (cari_per_tip=0) ORDER BY cari_per_kod";
+                             WHERE (cari_per_tip=@tipi) ORDER BY cari_per_kod ";
+            // cari_per_tip == 	0:Satıcı Eleman 1:Satın Almacı 2:Diğer Eleman
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
             SqlDataReader myReader;
@@ -32,6 +34,7 @@ namespace WebAPI1.Controllers.CariPersoneller
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    myCommand.Parameters.AddWithValue("@tipi", tipi);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

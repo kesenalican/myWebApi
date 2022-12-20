@@ -6,10 +6,10 @@ namespace WebAPI1.Controllers.StokController
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StokSatisFiyatListeleri : ControllerBase
+    public class StokSatisFiyatListeleriController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public StokSatisFiyatListeleri(IConfiguration configuration)
+        public StokSatisFiyatListeleriController(IConfiguration configuration)
         {
             _configuration = configuration;
 
