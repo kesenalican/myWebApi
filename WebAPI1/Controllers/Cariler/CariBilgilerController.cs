@@ -60,7 +60,7 @@ namespace WebAPI1.Controllers.Cariler
         [HttpGet("fullCari")]
         public JsonResult GetCari()
         {
-            string query = @"SELECT cari_kod AS CariKodu FROM CARI_HESAPLAR ORDER BY cari_kod ";
+            string query = @"SELECT cari_kod AS CariKodu, cari_unvan1 AS CariUnvani1 FROM CARI_HESAPLAR ORDER BY cari_kod ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
             SqlDataReader myReader;
@@ -69,6 +69,60 @@ namespace WebAPI1.Controllers.Cariler
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    table.Select();
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult(table);
+        }
+
+        [HttpGet("search")]
+        public JsonResult SearchCari(int offset,string? cariUnvani, string? cariKodu)
+        {
+            string query = @"SELECT
+                cari_kod AS CariKodu /* CARI KODU */ ,
+                cari_unvan1 AS CariUnvani1 ,
+                cari_unvan2 AS CariUnvani2,
+                cari_vdaire_adi AS CariVDaireAdi,
+                cari_vdaire_no AS CariVDaireNo,
+                cari_EMail AS CariEmail,
+                cari_CepTel AS CariCepTel,
+                cari_satis_fk AS cariBagliStok,
+                CASE
+                WHEN Cari_F10da_detay = 1 Then dbo.fn_CariHesapAnaDovizBakiye('',0,cari_kod,'','',NULL,NULL,NULL,0,MusteriTeminatMektubu_Bakiyeyi_Etkilemesin_fl,FirmaTeminatMektubu_Bakiyeyi_Etkilemesin_fl,DepozitoCeki_Bakiyeyi_Etkilemesin_fl,DepozitoSenedi_Bakiyeyi_Etkilemesin_fl)
+                WHEN Cari_F10da_detay = 2 Then dbo.fn_CariHesapAlternatifDovizBakiye('',0,cari_kod,'','',NULL,NULL,NULL,0,MusteriTeminatMektubu_Bakiyeyi_Etkilemesin_fl,FirmaTeminatMektubu_Bakiyeyi_Etkilemesin_fl,DepozitoCeki_Bakiyeyi_Etkilemesin_fl,DepozitoSenedi_Bakiyeyi_Etkilemesin_fl)
+                WHEN Cari_F10da_detay = 3 Then dbo.fn_CariHesapOrjinalDovizBakiye('',0,cari_kod,'','',0,NULL,NULL,0,MusteriTeminatMektubu_Bakiyeyi_Etkilemesin_fl,FirmaTeminatMektubu_Bakiyeyi_Etkilemesin_fl,DepozitoCeki_Bakiyeyi_Etkilemesin_fl,DepozitoSenedi_Bakiyeyi_Etkilemesin_fl)
+                WHEN Cari_F10da_detay = 4 Then dbo.fn_CariHareketSayisi(0,cari_kod,'')
+                END AS CariBakiye /* BAKİYE / HAREKET SAYISI */ 
+                FROM dbo.CARI_HESAPLAR 
+                LEFT OUTER JOIN dbo.vw_Gendata ON 1=1
+				WHERE cari_unvan1 like '%'+@CariUnvani1+'%' AND cari_kod like '%'+@CariKodu+'%'
+                ORDER BY cari_kod
+                OFFSET @offset ROWS FETCH NEXT 20 ROWS ONLY ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    if(cariUnvani ==null)
+                    {
+                        cariUnvani = "";
+                    }
+                    if(cariKodu == null)
+                    {
+                        cariKodu = "";
+                    }
+                    myCommand.Parameters.AddWithValue("@offset", offset);
+                    myCommand.Parameters.AddWithValue("@CariKodu", cariKodu);
+                    myCommand.Parameters.AddWithValue("@CariUnvani1", cariUnvani);
+
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     table.Select();
