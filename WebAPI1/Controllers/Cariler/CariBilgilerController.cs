@@ -102,7 +102,8 @@ namespace WebAPI1.Controllers.Cariler
                 LEFT OUTER JOIN dbo.vw_Gendata ON 1=1
 				WHERE cari_unvan1 like '%'+@CariUnvani1+'%' AND cari_kod like '%'+@CariKodu+'%'
                 ORDER BY cari_kod
-                OFFSET @offset ROWS FETCH NEXT 20 ROWS ONLY ";
+                OFFSET @offset ROWS FETCH NEXT 20 ROWS ONLY
+                ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
             SqlDataReader myReader;
@@ -122,10 +123,10 @@ namespace WebAPI1.Controllers.Cariler
                     myCommand.Parameters.AddWithValue("@offset", offset);
                     myCommand.Parameters.AddWithValue("@CariKodu", cariKodu);
                     myCommand.Parameters.AddWithValue("@CariUnvani1", cariUnvani);
-
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     table.Select();
+                    
                     myReader.Close();
                     myCon.Close();
                 }
