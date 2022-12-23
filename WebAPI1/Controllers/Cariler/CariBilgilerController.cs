@@ -100,7 +100,7 @@ namespace WebAPI1.Controllers.Cariler
                 END AS CariBakiye /* BAKİYE / HAREKET SAYISI */ 
                 FROM dbo.CARI_HESAPLAR 
                 LEFT OUTER JOIN dbo.vw_Gendata ON 1=1
-				WHERE cari_unvan1 like '%'+@CariUnvani1+'%' AND cari_kod like '%'+@CariKodu+'%'
+				WHERE cari_unvan1 like '%'+@CariUnvani1+'%' OR cari_kod like '%'+@CariKodu+'%'
                 ORDER BY cari_kod
                 OFFSET @offset ROWS FETCH NEXT 20 ROWS ONLY
                 ";
@@ -126,7 +126,6 @@ namespace WebAPI1.Controllers.Cariler
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     table.Select();
-                    
                     myReader.Close();
                     myCon.Close();
                 }

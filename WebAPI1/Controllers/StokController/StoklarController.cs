@@ -18,8 +18,8 @@ namespace WebAPI1.Controllers.StokController
         [HttpGet]
         public JsonResult GetWithCode(int offset)
         {
-            string query = @"							SELECT  
-							BARKOD_TANIMLARI.bar_kodu AS barkodu,
+            string query = @"							SELECT
+                            BARKOD_TANIMLARI.bar_kodu AS barkodu,
                             sto_kod AS StokKodu /* KODU */,
                             sto_isim AS StokIsim /* ADI */,
                             ISNULL(sfiyat_fiyati,0) AS StokFiyat /* FİYAT */,
@@ -54,7 +54,7 @@ namespace WebAPI1.Controllers.StokController
 							WHEN sto_toptan_vergi = 4 Then dbo.fn_VergiYuzde(4)
 							END AS ToptanVergiYuzde
                             FROM STOKLAR WITH (NOLOCK)
-							INNER JOIN BARKOD_TANIMLARI ON BARKOD_TANIMLARI.bar_stokkodu = STOKLAR.sto_kod
+                            INNER JOIN BARKOD_TANIMLARI ON BARKOD_TANIMLARI.bar_stokkodu = STOKLAR.sto_kod
                             LEFT OUTER JOIN dbo.STOK_SATIS_FIYATLARI_F1_D0_VIEW on sfiyat_stokkod = sto_kod AND sfiyat_satirno = 1
                             LEFT OUTER JOIN MikroDB_V16.dbo.KUR_ISIMLERI on Kur_No =  ISNULL(sfiyat_doviz,0)
                             ORDER BY sto_kod
@@ -63,11 +63,13 @@ namespace WebAPI1.Controllers.StokController
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
             SqlDataReader myReader;
+            offset = 0;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+
                     //myCommand.Parameters.AddWithValue("@pageCount", page.Page);
                     myCommand.Parameters.AddWithValue("@offset", offset);
                     myReader = myCommand.ExecuteReader();
@@ -143,9 +145,10 @@ namespace WebAPI1.Controllers.StokController
             return new JsonResult(table);
         }
         [HttpGet("search")]
-        public JsonResult SearchStok()
+        public JsonResult SearchStok(int offset, string? stokKodu, string? stokIsmi)
         {
-            string query = @"SELECT TOP 100 PERCENT 
+            string query = @"SELECT  
+							BARKOD_TANIMLARI.bar_kodu AS barkodu,
                             sto_kod AS StokKodu /* KODU */,
                             sto_isim AS StokIsim /* ADI */,
                             ISNULL(sfiyat_fiyati,0) AS StokFiyat /* FİYAT */,
@@ -158,11 +161,34 @@ namespace WebAPI1.Controllers.StokController
                             sto_birim3_katsayi AS StokBirim3_katsayi,
                             sto_reyon_kodu AS StokReyon,
                             sto_marka_kodu AS StokMarka,
-                            sto_model_kodu AS StokModel
+                            sto_model_kodu AS StokModel,
+							CASE 
+							WHEN sto_perakende_vergi = 2 Then dbo.fn_VergiIsim(2)
+							WHEN sto_perakende_vergi = 3 Then dbo.fn_VergiIsim(3)
+							WHEN sto_perakende_vergi = 4 Then  dbo.fn_VergiIsim(4)
+							END AS PerakendeVergiIsim,
+							CASE 
+							WHEN sto_perakende_vergi = 2 Then dbo.fn_VergiYuzde(2)
+							WHEN sto_perakende_vergi = 3 Then dbo.fn_VergiYuzde(3)
+							WHEN sto_perakende_vergi = 4 Then dbo.fn_VergiYuzde(4)
+							END AS PerakendeVergiYuzde,
+							CASE 
+							WHEN sto_toptan_vergi = 2 Then dbo.fn_VergiIsim(2)
+							WHEN sto_toptan_vergi = 3 Then dbo.fn_VergiIsim(3)
+							WHEN sto_toptan_vergi = 4 Then dbo.fn_VergiIsim(4)
+							END AS ToptanVergiIsim,
+							CASE 
+							WHEN sto_toptan_vergi = 2 Then dbo.fn_VergiYuzde(2)
+							WHEN sto_toptan_vergi = 3 Then dbo.fn_VergiYuzde(3)
+							WHEN sto_toptan_vergi = 4 Then dbo.fn_VergiYuzde(4)
+							END AS ToptanVergiYuzde
                             FROM STOKLAR WITH (NOLOCK)
+							INNER JOIN BARKOD_TANIMLARI ON BARKOD_TANIMLARI.bar_stokkodu = STOKLAR.sto_kod
                             LEFT OUTER JOIN dbo.STOK_SATIS_FIYATLARI_F1_D0_VIEW on sfiyat_stokkod = sto_kod AND sfiyat_satirno = 1
                             LEFT OUTER JOIN MikroDB_V16.dbo.KUR_ISIMLERI on Kur_No =  ISNULL(sfiyat_doviz,0)
+                            WHERE sto_kod like '%'+@StokKodu+'%' OR sto_isim like '%'+@StokIsim+'%'
                             ORDER BY sto_kod
+                            OFFSET @offset ROWS FETCH NEXT 20 ROWS ONLY
                              ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DinamikMikroMobilConn");
@@ -172,6 +198,18 @@ namespace WebAPI1.Controllers.StokController
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    if (stokIsmi == null)
+                    {
+                        stokIsmi = "";
+                    }
+                    if (stokKodu == null)
+                    {
+                        stokKodu = "";
+                    }
+                    myCommand.Parameters.AddWithValue("@offset", offset);
+                    myCommand.Parameters.AddWithValue("@StokKodu",stokKodu);
+                    myCommand.Parameters.AddWithValue("@StokIsim", stokIsmi);
+
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
