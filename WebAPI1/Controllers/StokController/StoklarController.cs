@@ -210,7 +210,7 @@ namespace WebAPI1.Controllers.StokController
                     myCommand.Parameters.AddWithValue("@StokKodu",stokKodu);
                     myCommand.Parameters.AddWithValue("@StokIsim", stokIsmi);
 
-                    myReader = myCommand.ExecuteReader();
+                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
                     myCon.Close();
@@ -222,5 +222,5 @@ namespace WebAPI1.Controllers.StokController
 
 
 
-    }
+    }              
 }
